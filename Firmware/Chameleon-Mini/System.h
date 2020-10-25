@@ -38,21 +38,27 @@ void SystemStopUSBClock(void);
 void SystemInterruptInit(void);
 INLINE bool SystemTick100ms(void);
 
-INLINE bool SystemTick100ms(void)
-{
+INLINE bool SystemTick100ms(void) {
     if (RTC.INTFLAGS & RTC_COMPIF_bm) {
-    	while(RTC.STATUS & RTC_SYNCBUSY_bm)
-    		;
+        while (RTC.STATUS & RTC_SYNCBUSY_bm)
+            ;
 
-    	RTC.INTFLAGS = RTC_COMPIF_bm;
-    	return true;
+        RTC.INTFLAGS = RTC_COMPIF_bm;
+        return true;
     }
 
     return false;
 }
 
+INLINE void SystemTickClearFlag(void) {
+    while (RTC.STATUS & RTC_SYNCBUSY_bm)
+        ;
+
+    RTC.INTFLAGS = RTC_COMPIF_bm;
+}
+
 INLINE uint16_t SystemGetSysTick(void) {
-	return SYSTEM_TICK_REGISTER | RTC.CNT;
+    return SYSTEM_TICK_REGISTER | RTC.CNT;
 }
 
 #endif /* SYSTEM_H */

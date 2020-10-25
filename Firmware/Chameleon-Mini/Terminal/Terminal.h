@@ -19,13 +19,14 @@
 #define TERMINAL_BUFFER_SIZE	512
 
 typedef enum {
-	TERMINAL_UNINITIALIZED,
-	TERMINAL_INITIALIZING,
-	TERMINAL_INITIALIZED,
-	TERMINAL_UNITIALIZING
+    TERMINAL_UNINITIALIZED,
+    TERMINAL_INITIALIZING,
+    TERMINAL_INITIALIZED,
+    TERMINAL_UNITIALIZING
 } TerminalStateEnum;
 
 extern uint8_t TerminalBuffer[TERMINAL_BUFFER_SIZE];
+extern uint16_t TerminalBufferIdx;
 extern USB_ClassInfo_CDC_Device_t TerminalHandle;
 extern TerminalStateEnum TerminalState;
 
@@ -35,11 +36,12 @@ void TerminalTick(void);
 
 /*void TerminalSendHex(void* Buffer, uint16_t ByteCount);*/
 INLINE void TerminalSendByte(uint8_t Byte);
-void TerminalSendBlock(const void* Buffer, uint16_t ByteCount);
+INLINE void TerminalFlushBuffer(void);
+void TerminalSendBlock(const void *Buffer, uint16_t ByteCount);
 
 INLINE void TerminalSendChar(char c);
-void TerminalSendString(const char* s);
-void TerminalSendStringP(const char* s);
+void TerminalSendString(const char *s);
+void TerminalSendStringP(const char *s);
 
 void EVENT_USB_Device_Connect(void);
 void EVENT_USB_Device_Disconnect(void);
@@ -48,5 +50,11 @@ void EVENT_USB_Device_ControlRequest(void);
 
 INLINE void TerminalSendChar(char c) { CDC_Device_SendByte(&TerminalHandle, c); }
 INLINE void TerminalSendByte(uint8_t Byte) { CDC_Device_SendByte(&TerminalHandle, Byte); }
+
+INLINE void TerminalFlushBuffer(void) {
+    CDC_Device_Flush(&TerminalHandle);
+    TerminalBufferIdx = 0;
+    TerminalBuffer[TerminalBufferIdx] = '\0';
+}
 
 #endif /* TERMINAL_H_ */

@@ -84,6 +84,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>After plugging in a USB cable, the ChameleonMini enumerates as a virtual serial interface. The settings of the serial interface, e.g. baudrate, stop and parity bits, are ignored by the Chameleon. For a high level of compatibility towards both humans and computers, Chameleon can be set up and controlled by means of a text-based command line interface, which can be accessed by using simple terminal software like hyper-terminal or teraterm. The command line is optimized to cooperate with script languages such as Python or TCL.</p>
+<dl class="section note"><dt>Note</dt><dd>Before reading this page, you may also wish to have a look at the <a href="https://play.google.com/store/apps/details?id=com.maxieds.chameleonminilivedebugger">Chameleon Android App</a>, which is an external contribution to this project. Development and maintenance can be found <a href="https://github.com/maxieds/ChameleonMiniLiveDebugger">here</a> (please also ask questions regarding the app there).</dd></dl>
 <h1>Chameleon Command Structure </h1>
 <p>For communicating with the Chameleon via USB, there exist four different syntax types:</p><ul>
 <li><code>&lt;COMMAND&gt;=&lt;VALUE&gt;</code> sets a parameter of the Chameleon ('set')</li>
@@ -249,13 +250,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr>
 <td><code>DUMP_MFU</code> </td><td>Reads the whole content of a Mifare Ultralight card that is in the range of the antenna and returns it. This command is a <a class="el" href="Page_CommandLine.html#Anchor_TimeoutCommands">Timeout command</a>. </td></tr>
 <tr>
-<td><code>IDENTIFY</code> </td><td>Identifies the type of a card in the range of the antenna and returns it. </td></tr>
+<td><code>CLONE_MFU</code> </td><td>Clones a Mifare Ultralight card that is in the range of the antenna to the current slot, which is then accordingly configured to emulate it. This command is a <a class="el" href="Page_CommandLine.html#Anchor_TimeoutCommands">Timeout command</a>. </td></tr>
+<tr>
+<td><code>IDENTIFY</code> </td><td>Identifies the type of a card in the range of the antenna and returns it. This command is a <a class="el" href="Page_CommandLine.html#Anchor_TimeoutCommands">Timeout command</a>. </td></tr>
 <tr>
 <td><code>THRESHOLD=?</code> </td><td>Returns the possible number range for the reader threshold. </td></tr>
 <tr>
 <td><code>THRESHOLD=&lt;NUMBER&gt;</code> </td><td>Globally sets the reader threshold. The &lt;NUMBER&gt; influences the reader function and range. Setting a wrong value may result in malfunctioning of the reader. DEFAULT: 400 </td></tr>
 <tr>
 <td><code>THRESHOLD?</code> </td><td>Returns the current reader threshold. </td></tr>
+<tr>
+<td><code>AUTOCALIBRATE</code> </td><td>Automatically finds a good threshold for communicating with the card that currently is on top of the Chameleon. This command is a <a class="el" href="Page_CommandLine.html#Anchor_TimeoutCommands">Timeout command</a>. </td></tr>
 <tr>
 <td><code>FIELD?</code> </td><td>Returns whether (1) or not (0) the reader field is active. </td></tr>
 <tr>
@@ -284,7 +289,7 @@ When setting the timeout to zero, there is no timeout and thus a process may con
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 5 2017 10:03:12 for Chameleon-Mini by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Oct 23 2020 10:47:16 for Chameleon-Mini by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
